@@ -1,7 +1,7 @@
 ---
 title: "Alcohol vs Seat choice"
-author: "Your Name"
-date: "Fall 2020"
+author: "Jennifer Nava"
+date: "June 7,2021"
 output: html_document
 ---
 
@@ -22,12 +22,16 @@ davisdata <- read.csv(file="UCDavis.csv")
 ```{r}
 basicCN <- ggplot(davisdata,aes(y=alcohol,x=Seat))
 ```
-## Now add in boxplot
-
 ```{r}
+
+## Now add in boxplot
+basicCN <- ggplot(davisdata,aes(x=Seat,y=alcohol))
+
 basicCN + geom_boxplot()
 ```
-  
+
+It appears that the people in the back consume more alcohol than the people who sit in the middle and front. 75% of people who sit in the back drink more than people sitting in the middle and front. 
+
   
 ### get fancy  
 
@@ -37,8 +41,22 @@ basicCN + geom_boxplot(notch=TRUE,outlier.color = "red") + stat_boxplot(geom ='e
 
 ## Numerical Summarys 
 
+```{r}
+favstats(alcohol~Seat,data=ucdavis1)
+```
+It seems, that the people in the back seats drink an average of 8.5 drinks and the people that sit in the front drink an average of 1.8 drinks. 
+
 ## Inferential Tests
 
-## Conclusions
+```{r}
+model1 <- aov(alcohol~Seat,data=davisdata)
+summary.aov(model1)
+```
 
 
+
+```{r}
+plot(TukeyHSD(model1))
+```
+
+Using the Turkey plot box we can tell that that the front is different from the back, and the middle is different from the back. However there is no difference between the middle and the front. 
